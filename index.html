@@ -1,365 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Om Ramanathan — Founder of The Real Temp, Developer, Water Safety Instructor, and aspiring engineer based in New Jersey.">
-    <meta name="keywords" content="Om Ramanathan, The Real Temp, Developer, Founder, Water Safety Instructor, Portfolio">
-    <meta name="author" content="Om Ramanathan">
-
-    <title>Om Ramanathan — Founder, Developer & Builder</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Om Ramanathan is a student builder, founder, and community leader working across engineering, software, and STEM education.">
+  <meta property="og:title" content="Om Ramanathan | Builder & Community Leader">
+  <meta property="og:description" content="Engineering ideas, building products, and expanding access to hands-on STEM learning.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://omramanathan.com/">
+  <title>Om Ramanathan | Builder & Community Leader</title>
+  <link rel="canonical" href="https://omramanathan.com/">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
-
-    <!-- ==================== NAVIGATION ==================== -->
-    <nav id="navbar" class="navbar">
-        <div class="nav-container">
-            <a href="#hero" class="nav-logo">OR</a>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#education" class="nav-link">Education</a></li>
-                <li><a href="#certifications" class="nav-link">Certifications</a></li>
-                <li><a href="#volunteering" class="nav-link">Volunteering</a></li>
-                <li><a href="#contact" class="nav-link nav-link--cta">Get in Touch</a></li>
-            </ul>
-        </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="index.html"><span class="brand-mark">OR</span><span>Om Ramanathan</span></a>
+      <ul class="nav-links" id="site-menu" data-nav-menu>
+        <li><a href="index.html" aria-current="page">Home</a></li><li><a href="linkedin.html">Profile</a></li><li><a href="projects.html">Projects</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme"><svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg><svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button>
+      <button class="icon-button menu-button" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation" aria-controls="site-menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </nav>
-
-    <!-- ==================== HERO ==================== -->
-    <section id="hero" class="hero">
-        <div class="hero-bg">
-            <div class="orb orb-1"></div>
-            <div class="orb orb-2"></div>
-            <div class="orb orb-3"></div>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div data-reveal>
+          <p class="eyebrow">Student builder · New Jersey</p>
+          <h1>Building useful ideas and <span>opening doors to STEM.</span></h1>
+          <p class="lede">I'm Om Ramanathan—a founder, aspiring engineer, and community leader turning technical curiosity into products, robots, and free hands-on learning experiences.</p>
+          <div class="hero-actions"><a class="button" href="projects.html">Explore my work <span aria-hidden="true">→</span></a><a class="button button--secondary" href="contact.html">Get in touch</a></div>
         </div>
-        <div class="hero-content">
-            <p class="hero-greeting fade-in">Hi, I'm</p>
-            <h1 class="hero-name fade-in">Om Ramanathan</h1>
-            <div class="hero-subtitle fade-in">
-                <span class="typewriter-text"></span><span class="typewriter-cursor">|</span>
-            </div>
-            <p class="hero-description fade-in">
-                Building products, teaching water safety, and chasing big ideas — one project at a time.
-            </p>
-            <div class="hero-cta fade-in">
-                <a href="#experience" class="btn btn-primary">View My Work</a>
-                <a href="#contact" class="btn btn-outline">Say Hello</a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <div class="scroll-line"></div>
-        </div>
+        <aside class="hero-panel" data-reveal aria-label="Current focus">
+          <span class="hero-panel-label">Currently building</span>
+          <ul><li><strong>The Real Temp</strong><span>Founder, designer, and developer</span></li><li><strong>RoadSeal</strong><span>An autonomous road-crack sealing robot in development</span></li><li><strong>STEM outreach</strong><span>Free, beginner-friendly workshops for young learners</span></li></ul>
+        </aside>
+      </div>
     </section>
-
-    <!-- ==================== ABOUT ==================== -->
-    <section id="about" class="section about">
-        <div class="container">
-            <h2 class="section-title fade-in">About Me</h2>
-            <div class="about-content">
-                <div class="about-text fade-in">
-                    <p>
-                        I'm a high school junior at <strong>Scotch Plains-Fanwood High School</strong> with a passion for building things — whether it's a startup, a Unity game, or the confidence of a young swimmer.
-                    </p>
-                    <p>
-                        As the <strong>Founder of The Real Temp</strong>, I design and develop products from the ground up. I'm also a certified <strong>Water Safety Instructor</strong> and <strong>Lifeguard</strong>, and I volunteer as a swim team coach and academic tutor for refugee children.
-                    </p>
-                    <p>
-                        When I'm not coding or in the pool, you'll find me tinkering in <strong>Robotics Club</strong>, exploring engineering mechanics, or working on my next big idea.
-                    </p>
-                </div>
-                <div class="about-stats fade-in">
-                    <div class="stat-card">
-                        <span class="stat-icon">📍</span>
-                        <span class="stat-label">Based in</span>
-                        <span class="stat-value">New Jersey</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">🎓</span>
-                        <span class="stat-label">Currently</span>
-                        <span class="stat-value">10th Grade</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">🚀</span>
-                        <span class="stat-label">Startup</span>
-                        <span class="stat-value">The Real Temp</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">🏊</span>
-                        <span class="stat-label">Coaching Since</span>
-                        <span class="stat-value">2022</span>
-                    </div>
-                </div>
-            </div>
+    <section class="section section--soft">
+      <div class="container">
+        <div class="section-head"><div><p class="eyebrow">Explore</p><h2>Four sides of my work.</h2></div><p class="lede">A focused look at what I build, learn, lead, and contribute.</p></div>
+        <div class="route-grid">
+          <a class="route-card" href="linkedin.html" data-reveal><span class="route-number">01 / PROFILE</span><span class="arrow" aria-hidden="true">↗</span><h3>Professional profile</h3><p>Experience, education, certifications, volunteering, and skills.</p></a>
+          <a class="route-card" href="projects.html" data-reveal><span class="route-number">02 / PROJECTS</span><span class="arrow" aria-hidden="true">↗</span><h3>Ideas made tangible</h3><p>Products and engineering concepts, from The Real Temp to RoadSeal.</p></a>
+          <a class="route-card" href="outreach.html" data-reveal><span class="route-number">03 / OUTREACH</span><span class="arrow" aria-hidden="true">↗</span><h3>STEM access</h3><p>Free workshops that help younger students learn by building.</p></a>
+          <a class="route-card" href="contact.html" data-reveal><span class="route-number">04 / CONTACT</span><span class="arrow" aria-hidden="true">↗</span><h3>Start a conversation</h3><p>Connect about projects, workshops, partnerships, or new ideas.</p></a>
         </div>
+      </div>
     </section>
-
-    <!-- ==================== EXPERIENCE ==================== -->
-    <section id="experience" class="section experience">
-        <div class="container">
-            <h2 class="section-title fade-in">Experience</h2>
-            <div class="timeline">
-
-                <!-- The Real Temp -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div class="timeline-company-info">
-                                <h3 class="timeline-role">Founder</h3>
-                                <p class="timeline-company">The Real Temp · Self-employed</p>
-                            </div>
-                            <span class="timeline-date">Apr 2025 — Present</span>
-                        </div>
-                        <p class="timeline-location">New York City Metropolitan Area</p>
-                        <p class="timeline-description">
-                            Founder, Designer, and Developer — building a product from concept to launch, handling everything from business strategy to UI/UX design and development.
-                        </p>
-                        <div class="timeline-skills">
-                            <span class="skill-tag">Business Ownership</span>
-                            <span class="skill-tag">Start-up Leadership</span>
-                            <span class="skill-tag">Product Design</span>
-                            <span class="skill-tag">Development</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Water Safety Instructor -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div class="timeline-company-info">
-                                <h3 class="timeline-role">Water Safety Instructor</h3>
-                                <p class="timeline-company">JCC of Central NJ · Part-time</p>
-                            </div>
-                            <span class="timeline-date">Mar 2025 — Present</span>
-                        </div>
-                        <p class="timeline-location">Scotch Plains, New Jersey</p>
-                        <p class="timeline-description">
-                            Certified Red Cross Water Safety Instructor teaching swim lessons and water safety to community members of all ages.
-                        </p>
-                        <div class="timeline-skills">
-                            <span class="skill-tag">Swim Instruction</span>
-                            <span class="skill-tag">Water Safety Training</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lifeguard -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div class="timeline-company-info">
-                                <h3 class="timeline-role">Lifeguard</h3>
-                                <p class="timeline-company">JCC of Central NJ · Part-time</p>
-                            </div>
-                            <span class="timeline-date">Nov 2024 — Present</span>
-                        </div>
-                        <p class="timeline-location">Scotch Plains, New Jersey</p>
-                        <p class="timeline-description">
-                            Ensuring patron safety at the aquatic facility, maintaining vigilance and readiness for emergency response with CPR/AED and First Aid certification.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Assistant WSI -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div class="timeline-company-info">
-                                <h3 class="timeline-role">Assistant Water Safety Instructor</h3>
-                                <p class="timeline-company">JCC of Central NJ · Part-time</p>
-                            </div>
-                            <span class="timeline-date">Jun 2024 — Mar 2025</span>
-                        </div>
-                        <p class="timeline-location">Scotch Plains, New Jersey</p>
-                        <p class="timeline-description">
-                            Assisted lead instructors in teaching swim lessons, working with students on technique and water confidence.
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <section class="section">
+      <div class="container"><p class="eyebrow">At a glance</p><h2>Technology with a community purpose.</h2>
+        <div class="highlight-grid"><div class="highlight"><strong>Founder</strong><p>Leading product strategy, design, and development at The Real Temp.</p></div><div class="highlight"><strong>Inventor</strong><p>Developing RoadSeal to address roadway cracks before winter damage.</p></div><div class="highlight"><strong>Chapter leader</strong><p>Leading local STEM Enrichment of New Jersey outreach.</p></div><div class="highlight"><strong>Mentor</strong><p>Teaching water safety, coaching swimmers, and tutoring students.</p></div></div>
+        <div class="actions"><a class="button" href="linkedin.html">View the full profile</a><a class="button button--secondary" href="outreach.html">See the outreach work</a></div>
+      </div>
     </section>
-
-    <!-- ==================== EDUCATION ==================== -->
-    <section id="education" class="section education">
-        <div class="container">
-            <h2 class="section-title fade-in">Education</h2>
-            <div class="education-card fade-in">
-                <div class="education-header">
-                    <div class="education-icon">🎓</div>
-                    <div>
-                        <h3 class="education-school">Scotch Plains-Fanwood High School</h3>
-                        <p class="education-degree">High School Diploma</p>
-                        <p class="education-year">Sep 2024 — Jun 2028</p>
-                    </div>
-                </div>
-                <div class="education-details">
-                    <p class="education-grade">Current Grade: <strong>10th</strong></p>
-                    <div class="education-activities">
-                        <h4>Activities & Societies</h4>
-                        <div class="activity-tags">
-                            <span class="activity-tag">🏊 Swim Team</span>
-                            <span class="activity-tag">🤖 Robotics Club</span>
-                            <span class="activity-tag">🧮 SMAC Club</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== CERTIFICATIONS ==================== -->
-    <section id="certifications" class="section certifications">
-        <div class="container">
-            <h2 class="section-title fade-in">Licenses & Certifications</h2>
-            <div class="cert-grid">
-
-                <div class="cert-card fade-in">
-                    <div class="cert-issuer-badge">
-                        <span class="cert-icon">🤖</span>
-                    </div>
-                    <h3 class="cert-name">Inspirit AI Scholars Program</h3>
-                    <p class="cert-issuer">Inspirit AI</p>
-                    <p class="cert-date">Issued Jun 2025</p>
-                </div>
-
-                <div class="cert-card fade-in">
-                    <div class="cert-issuer-badge">
-                        <span class="cert-icon">🎮</span>
-                    </div>
-                    <h3 class="cert-name">Unity Junior Programmer</h3>
-                    <p class="cert-issuer">Unity</p>
-                    <p class="cert-date">Issued Jun 2025</p>
-                </div>
-
-                <div class="cert-card fade-in">
-                    <div class="cert-issuer-badge">
-                        <span class="cert-icon">🎮</span>
-                    </div>
-                    <h3 class="cert-name">Unity Essentials Programmer</h3>
-                    <p class="cert-issuer">Unity</p>
-                    <p class="cert-date">Issued Jun 2025</p>
-                </div>
-
-                <div class="cert-card fade-in">
-                    <div class="cert-issuer-badge">
-                        <span class="cert-icon">🏊</span>
-                    </div>
-                    <h3 class="cert-name">Water Safety Instructor</h3>
-                    <p class="cert-issuer">American Red Cross</p>
-                    <p class="cert-date">Issued Mar 2025 · Expires Mar 2027</p>
-                </div>
-
-                <div class="cert-card fade-in">
-                    <div class="cert-issuer-badge">
-                        <span class="cert-icon">⚙️</span>
-                    </div>
-                    <h3 class="cert-name">Intro to Engineering Mechanics</h3>
-                    <p class="cert-issuer">Georgia Institute of Technology</p>
-                    <p class="cert-date">Issued Feb 2025</p>
-                </div>
-
-                <div class="cert-card fade-in">
-                    <div class="cert-issuer-badge">
-                        <span class="cert-icon">🛟</span>
-                    </div>
-                    <h3 class="cert-name">Lifeguarding with CPR/AED & First Aid</h3>
-                    <p class="cert-issuer">American Red Cross</p>
-                    <p class="cert-date">Issued Nov 2024 · Expires Nov 2026</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== VOLUNTEERING ==================== -->
-    <section id="volunteering" class="section volunteering">
-        <div class="container">
-            <h2 class="section-title fade-in">Volunteering</h2>
-            <div class="volunteer-grid">
-
-                <div class="volunteer-card fade-in">
-                    <div class="volunteer-icon">🏊</div>
-                    <div class="volunteer-content">
-                        <h3 class="volunteer-role">Swim Team Coach</h3>
-                        <p class="volunteer-org">JCC of Central NJ</p>
-                        <p class="volunteer-date">Sep 2022 — Present · 3+ years</p>
-                        <span class="volunteer-cause">Education</span>
-                        <p class="volunteer-description">
-                            I dedicate one hour every week towards helping my swim team's youth swimmers grow — building their technique, confidence, and love for the water.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="volunteer-card fade-in">
-                    <div class="volunteer-icon">📚</div>
-                    <div class="volunteer-content">
-                        <h3 class="volunteer-role">Academic Tutor</h3>
-                        <p class="volunteer-org">RAP NJ</p>
-                        <p class="volunteer-date">Apr 2025 — Present</p>
-                        <span class="volunteer-cause">Disaster & Humanitarian Relief</span>
-                        <p class="volunteer-description">
-                            Tutored children seeking refuge in America. Brought their English and Math skills up to grade level, helping them build a foundation for success.
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== CONTACT ==================== -->
-    <section id="contact" class="section contact">
-        <div class="container">
-            <div class="contact-content fade-in">
-                <h2 class="contact-title">Let's Connect</h2>
-                <p class="contact-description">
-                    Whether you want to collaborate on a project, discuss an idea, or just say hello — I'd love to hear from you.
-                </p>
-                <div class="contact-links">
-                    <a href="https://www.linkedin.com/in/omramanathan/" target="_blank" rel="noopener noreferrer" class="contact-link" id="linkedin-link">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="mailto:omramanathan@example.com" class="contact-link" id="email-link">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <rect x="2" y="4" width="20" height="16" rx="2"/>
-                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                        </svg>
-                        <span>Email</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="footer">
-        <div class="container">
-            <p>Designed & built by Om Ramanathan · <span id="current-year"></span></p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+  </main>
+  <footer class="footer"><div class="container footer-row"><p>© <span data-year></span> Om Ramanathan</p><p>Designed and built with purpose · <a href="mailto:om@omramanathan.com">om@omramanathan.com</a></p></div></footer>
+  <script src="script.js"></script>
 </body>
 </html>
