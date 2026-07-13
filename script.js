@@ -85,6 +85,9 @@
     const pointer = { x: -1000, y: -1000, active: false };
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     const compactScreen = window.matchMedia('(max-width: 700px)');
+    const rippleDuration = 900;
+    const rippleRadius = 155;
+    const rippleStrength = 0.032;
     let particles = [];
     let touchStart = null;
     let ripples = [];
@@ -107,7 +110,10 @@
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const count = compactScreen.matches
+      const touchPhone = compactScreen.matches && !finePointer.matches;
+      const count = touchPhone
+        ? Math.min(48, Math.max(36, Math.round(rect.width / 9.5)))
+        : compactScreen.matches
         ? Math.min(34, Math.max(22, Math.round(rect.width / 15)))
         : Math.min(76, Math.max(34, Math.round(rect.width / 18)));
       const drift = compactScreen.matches ? 0.13 : 0.28;
@@ -126,7 +132,7 @@
       context.clearRect(0, 0, width, height);
       const accent = getComputedStyle(root).getPropertyValue('--accent').trim();
       const now = performance.now();
-      ripples = ripples.filter((ripple) => now - ripple.startedAt < 800);
+      ripples = ripples.filter((ripple) => now - ripple.startedAt < rippleDuration);
 
       particles.forEach((particle) => {
         if (pointer.active && finePointer.matches) {
@@ -140,13 +146,12 @@
           }
         }
         ripples.forEach((ripple) => {
-          const progress = (now - ripple.startedAt) / 800;
+          const progress = (now - ripple.startedAt) / rippleDuration;
           const dx = particle.x - ripple.x;
           const dy = particle.y - ripple.y;
           const distance = Math.hypot(dx, dy);
-          const radius = 115;
-          if (distance < radius && distance > 0) {
-            const force = (1 - distance / radius) * (1 - progress) * 0.012;
+          if (distance < rippleRadius && distance > 0) {
+            const force = (1 - distance / rippleRadius) * (1 - progress) * rippleStrength;
             particle.vx += (dx / distance) * force;
             particle.vy += (dy / distance) * force;
           }
@@ -192,12 +197,12 @@
       });
 
       ripples.forEach((ripple) => {
-        const progress = (now - ripple.startedAt) / 800;
-        context.globalAlpha = (1 - progress) * 0.22;
+        const progress = (now - ripple.startedAt) / rippleDuration;
+        context.globalAlpha = (1 - progress) * 0.3;
         context.strokeStyle = accent;
-        context.lineWidth = 1.25;
+        context.lineWidth = 1.5;
         context.beginPath();
-        context.arc(ripple.x, ripple.y, 18 + progress * 90, 0, Math.PI * 2);
+        context.arc(ripple.x, ripple.y, 18 + progress * 120, 0, Math.PI * 2);
         context.stroke();
       });
       context.globalAlpha = 1;
