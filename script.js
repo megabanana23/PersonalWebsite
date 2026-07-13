@@ -83,7 +83,11 @@
   if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const context = canvas.getContext('2d');
     const pointer = { x: -1000, y: -1000, active: false };
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const compactScreen = window.matchMedia('(max-width: 700px)');
     let particles = [];
+    let touchStart = null;
+    let ripples = [];
     let animationFrame;
 
     const resizeParticles = () => {
@@ -94,12 +98,15 @@
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const count = Math.min(76, Math.max(34, Math.round(rect.width / 18)));
+      const count = compactScreen.matches
+        ? Math.min(34, Math.max(22, Math.round(rect.width / 15)))
+        : Math.min(76, Math.max(34, Math.round(rect.width / 18)));
+      const drift = compactScreen.matches ? 0.13 : 0.28;
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * rect.width,
         y: Math.random() * rect.height,
-        vx: (Math.random() - 0.5) * 0.28,
-        vy: (Math.random() - 0.5) * 0.28,
+        vx: (Math.random() - 0.5) * drift,
+        vy: (Math.random() - 0.5) * drift,
         r: 1.2 + Math.random() * 1.8,
       }));
     };
@@ -109,9 +116,11 @@
       const height = canvas.clientHeight;
       context.clearRect(0, 0, width, height);
       const accent = getComputedStyle(root).getPropertyValue('--accent').trim();
+      const now = performance.now();
+      ripples = ripples.filter((ripple) => now - ripple.startedAt < 800);
 
       particles.forEach((particle) => {
-        if (pointer.active) {
+        if (pointer.active && finePointer.matches) {
           const dx = particle.x - pointer.x;
           const dy = particle.y - pointer.y;
           const distance = Math.hypot(dx, dy);
@@ -121,8 +130,26 @@
             particle.vy += (dy / distance) * force * 0.045;
           }
         }
+        ripples.forEach((ripple) => {
+          const progress = (now - ripple.startedAt) / 800;
+          const dx = particle.x - ripple.x;
+          const dy = particle.y - ripple.y;
+          const distance = Math.hypot(dx, dy);
+          const radius = 115;
+          if (distance < radius && distance > 0) {
+            const force = (1 - distance / radius) * (1 - progress) * 0.012;
+            particle.vx += (dx / distance) * force;
+            particle.vy += (dy / distance) * force;
+          }
+        });
         particle.vx *= 0.992;
         particle.vy *= 0.992;
+        const speed = Math.hypot(particle.vx, particle.vy);
+        const maxSpeed = 0.72;
+        if (speed > maxSpeed) {
+          particle.vx = (particle.vx / speed) * maxSpeed;
+          particle.vy = (particle.vy / speed) * maxSpeed;
+        }
         particle.x += particle.vx;
         particle.y += particle.vy;
         if (particle.x < -10) particle.x = width + 10;
@@ -154,16 +181,47 @@
         context.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
         context.fill();
       });
+
+      ripples.forEach((ripple) => {
+        const progress = (now - ripple.startedAt) / 800;
+        context.globalAlpha = (1 - progress) * 0.22;
+        context.strokeStyle = accent;
+        context.lineWidth = 1.25;
+        context.beginPath();
+        context.arc(ripple.x, ripple.y, 18 + progress * 90, 0, Math.PI * 2);
+        context.stroke();
+      });
       context.globalAlpha = 1;
       animationFrame = requestAnimationFrame(drawParticles);
     };
 
     document.addEventListener('pointermove', (event) => {
+      if (!finePointer.matches || event.pointerType === 'touch') return;
       pointer.x = event.clientX;
       pointer.y = event.clientY;
       pointer.active = true;
     });
-    document.addEventListener('pointerleave', () => { pointer.active = false; });
+    window.addEventListener('pointerleave', () => { pointer.active = false; });
+    document.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'touch') return;
+      pointer.active = false;
+      touchStart = {
+        x: event.clientX,
+        y: event.clientY,
+        startedAt: performance.now(),
+      };
+    }, { passive: true });
+    document.addEventListener('pointerup', (event) => {
+      if (event.pointerType !== 'touch' || !touchStart) return;
+      const movement = Math.hypot(event.clientX - touchStart.x, event.clientY - touchStart.y);
+      const duration = performance.now() - touchStart.startedAt;
+      if (movement < 12 && duration < 350) {
+        ripples.push({ x: event.clientX, y: event.clientY, startedAt: performance.now() });
+        if (ripples.length > 3) ripples.shift();
+      }
+      touchStart = null;
+    }, { passive: true });
+    document.addEventListener('pointercancel', () => { touchStart = null; }, { passive: true });
     window.addEventListener('resize', resizeParticles);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) cancelAnimationFrame(animationFrame);
