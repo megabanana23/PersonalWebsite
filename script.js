@@ -89,9 +89,18 @@
     let touchStart = null;
     let ripples = [];
     let animationFrame;
+    let canvasWidth = 0;
 
     const resizeParticles = () => {
-      const rect = { width: window.innerWidth, height: window.innerHeight };
+      const width = window.innerWidth;
+      if (compactScreen.matches && particles.length && Math.abs(width - canvasWidth) < 2) return;
+
+      canvasWidth = width;
+      const stableMobileHeight = Math.max(window.innerHeight, window.screen?.height || 0);
+      const rect = {
+        width,
+        height: compactScreen.matches ? stableMobileHeight : window.innerHeight,
+      };
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(rect.width * ratio);
       canvas.height = Math.round(rect.height * ratio);
