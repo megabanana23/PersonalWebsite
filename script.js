@@ -65,6 +65,8 @@
     const rippleDuration = 900;
     const rippleRadius = 155;
     const rippleStrength = 0.032;
+    const pointerRadius = 115;
+    const pointerStrength = 0.014;
     let particles = [];
     let touchStart = null;
     let ripples = [];
@@ -116,10 +118,10 @@
           const dx = particle.x - pointer.x;
           const dy = particle.y - pointer.y;
           const distance = Math.hypot(dx, dy);
-          if (distance < 150 && distance > 0) {
-            const force = (150 - distance) / 150;
-            particle.vx += (dx / distance) * force * 0.045;
-            particle.vy += (dy / distance) * force * 0.045;
+          if (distance < pointerRadius && distance > 0) {
+            const force = (pointerRadius - distance) / pointerRadius;
+            particle.vx += (dx / distance) * force * pointerStrength;
+            particle.vy += (dy / distance) * force * pointerStrength;
           }
         }
         ripples.forEach((ripple) => {
