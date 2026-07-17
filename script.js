@@ -1,6 +1,8 @@
 (() => {
   const root = document.documentElement;
   const themeToggle = document.querySelector('[data-theme-toggle]');
+  const menuToggle = document.querySelector('[data-menu-toggle]');
+  const navMenu = document.querySelector('[data-nav-menu]');
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
 
   const storedTheme = localStorage.getItem('theme');
@@ -28,6 +30,27 @@
 
   systemTheme.addEventListener?.('change', () => {
     if (!root.dataset.theme) updateThemeLabel();
+  });
+
+  const closeMenu = () => {
+    if (!menuToggle || !navMenu) return;
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Open navigation');
+    navMenu.classList.remove('is-open');
+    document.body.classList.remove('menu-open');
+  };
+
+  menuToggle?.addEventListener('click', () => {
+    const open = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!open));
+    menuToggle.setAttribute('aria-label', open ? 'Open navigation' : 'Close navigation');
+    navMenu?.classList.toggle('is-open', !open);
+    document.body.classList.toggle('menu-open', !open);
+  });
+
+  navMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
   });
 
   document.querySelectorAll('[data-year]').forEach((element) => {
@@ -65,8 +88,6 @@
     const rippleDuration = 900;
     const rippleRadius = 155;
     const rippleStrength = 0.032;
-    const pointerRadius = 115;
-    const pointerStrength = 0.014;
     let particles = [];
     let touchStart = null;
     let ripples = [];
@@ -118,10 +139,10 @@
           const dx = particle.x - pointer.x;
           const dy = particle.y - pointer.y;
           const distance = Math.hypot(dx, dy);
-          if (distance < pointerRadius && distance > 0) {
-            const force = (pointerRadius - distance) / pointerRadius;
-            particle.vx += (dx / distance) * force * pointerStrength;
-            particle.vy += (dy / distance) * force * pointerStrength;
+          if (distance < 150 && distance > 0) {
+            const force = (150 - distance) / 150;
+            particle.vx += (dx / distance) * force * 0.045;
+            particle.vy += (dy / distance) * force * 0.045;
           }
         }
         ripples.forEach((ripple) => {
