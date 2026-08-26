@@ -164,11 +164,29 @@ h3 { font-size: 1.2rem; }
 
 .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
 .project-card { display: flex; min-height: 410px; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: 22px; background: var(--surface); }
+.project-card--featured { grid-column: 1 / -1; }
 .project-visual { min-height: 170px; display: grid; place-items: center; padding: 30px; background: var(--surface-soft); border-bottom: 1px solid var(--border); }
+.project-visual--real-temp { grid-template-columns: auto 1fr; justify-content: start; gap: clamp(24px, 5vw, 64px); min-height: 210px; padding-inline: clamp(30px, 6vw, 72px); background: linear-gradient(125deg, var(--accent-soft), var(--surface-soft)); }
+.project-visual--real-temp p { margin: 0; color: var(--heading); font-family: 'Manrope', sans-serif; font-size: clamp(1.4rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -.035em; }
 .project-glyph { color: var(--accent-strong); font-family: 'Manrope', sans-serif; font-size: clamp(2rem, 5vw, 4.2rem); font-weight: 800; letter-spacing: -.07em; }
 .project-body { flex: 1; padding: 28px; }
+.project-body--featured { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(36px, 6vw, 80px); padding: clamp(30px, 5vw, 56px); }
+.project-intro h2 { margin-bottom: 16px; }
+.project-summary { font-size: 1.05rem; }
+.project-details { display: grid; gap: 32px; }
+.project-kicker { margin-bottom: 14px; color: var(--accent-strong) !important; font-size: .76rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.project-steps { display: grid; gap: 16px; margin: 0; padding: 0; counter-reset: project-step; list-style: none; }
+.project-steps li { position: relative; padding-left: 42px; counter-increment: project-step; }
+.project-steps li::before { content: counter(project-step); position: absolute; top: 1px; left: 0; display: grid; width: 27px; height: 27px; place-items: center; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong); font-size: .76rem; font-weight: 800; }
+.project-steps strong { display: block; color: var(--heading); }
+.project-steps span { display: block; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+.project-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 22px; margin: 0; padding: 0; list-style: none; }
+.project-features li { position: relative; padding-left: 20px; color: var(--muted); font-size: .9rem; }
+.project-features li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-strong); font-weight: 800; }
 .status { display: inline-flex; margin-bottom: 18px; padding: 5px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .project-body p { color: var(--muted); }
+.project-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; color: var(--accent-strong); font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+.project-link:hover { color: var(--heading); }
 .project-card--empty { border-style: dashed; }
 .project-card--empty .project-visual { opacity: .58; }
 
@@ -207,6 +225,7 @@ h3 { font-size: 1.2rem; }
 
 @media (max-width: 900px) {
   .hero-grid, .split, .event-summary { grid-template-columns: 1fr; }
+  .project-body--featured { grid-template-columns: 1fr; }
   .hero { min-height: auto; }
   .hero-panel { max-width: 600px; }
   .highlight-grid, .topic-grid { grid-template-columns: repeat(2, 1fr); }
@@ -237,6 +256,8 @@ h3 { font-size: 1.2rem; }
   h1 { font-size: 2.12rem; letter-spacing: -.04em; }
   .page-hero { padding: 56px 0 48px; }
   .highlight-grid, .topic-grid, .cert-grid { grid-template-columns: 1fr; }
+  .project-visual--real-temp, .project-features { grid-template-columns: 1fr; }
+  .project-visual--real-temp { gap: 8px; }
   .hero { padding: 46px 0 58px; }
   .hero h1 { max-width: 350px; margin-bottom: 20px; }
   .hero .lede { font-size: 1rem; line-height: 1.65; }
