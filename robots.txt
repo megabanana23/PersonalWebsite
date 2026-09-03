@@ -1,0 +1,5 @@
+# Public portfolio: allow standard search, AI-search, and user-requested crawlers.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.omramanathan.com/sitemap.xml

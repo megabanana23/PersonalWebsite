@@ -1,0 +1,26 @@
+# Om Ramanathan
+
+> Official website of Om Ramanathan, a New Jersey student engineer, founder, robotics builder, and STEM community leader.
+
+## Profile
+
+- [Home](https://www.omramanathan.com/): Overview of Om Ramanathan and his current work.
+- [Professional profile](https://www.omramanathan.com/linkedin.html): Experience, education, certifications, volunteering, and skills.
+- [LinkedIn](https://www.linkedin.com/in/omramanathan/): Om Ramanathan's public LinkedIn profile.
+
+## Projects
+
+- [Projects](https://www.omramanathan.com/projects.html): The Real Temp, RoadSeal, and other engineering work.
+- [The Real Temp](https://therealtemp.com/): Weather product founded, designed, and developed by Om Ramanathan.
+
+## STEM outreach
+
+- [Outreach](https://www.omramanathan.com/outreach.html): Free hands-on STEM workshops led by Om Ramanathan.
+- [Light and Sound workshop](https://www.omramanathan.com/workshop-light-sound.html)
+- [LEGO Bridge workshop](https://www.omramanathan.com/workshop-lego-bridge.html)
+- [Scratch Coding workshop](https://www.omramanathan.com/workshop-scratch.html)
+- [Build a LEGO City workshop](https://www.omramanathan.com/workshop-lego-city.html)
+
+## Contact
+
+- [Contact Om Ramanathan](https://www.omramanathan.com/contact.html)

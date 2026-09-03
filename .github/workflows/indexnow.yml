@@ -1,0 +1,60 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.html"
+      - "robots.txt"
+      - "sitemap.xml"
+      - "llms.txt"
+      - "CNAME"
+      - "528527b7027e4521aae400270ae25c13.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for the published key file
+        shell: bash
+        run: |
+          for attempt in {1..20}; do
+            if curl --fail --silent --show-error \
+              "https://www.omramanathan.com/528527b7027e4521aae400270ae25c13.txt" \
+              | grep --quiet --line-regexp "528527b7027e4521aae400270ae25c13"; then
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "The IndexNow key file was not available after five minutes."
+          exit 1
+
+      - name: Submit public URLs to IndexNow
+        shell: bash
+        run: |
+          curl --fail --silent --show-error \
+            --request POST "https://api.indexnow.org/indexnow" \
+            --header "Content-Type: application/json; charset=utf-8" \
+            --data @- <<'JSON'
+          {
+            "host": "www.omramanathan.com",
+            "key": "528527b7027e4521aae400270ae25c13",
+            "keyLocation": "https://www.omramanathan.com/528527b7027e4521aae400270ae25c13.txt",
+            "urlList": [
+              "https://www.omramanathan.com/",
+              "https://www.omramanathan.com/linkedin.html",
+              "https://www.omramanathan.com/projects.html",
+              "https://www.omramanathan.com/outreach.html",
+              "https://www.omramanathan.com/contact.html",
+              "https://www.omramanathan.com/workshop-light-sound.html",
+              "https://www.omramanathan.com/workshop-lego-bridge.html",
+              "https://www.omramanathan.com/workshop-scratch.html",
+              "https://www.omramanathan.com/workshop-lego-city.html"
+            ]
+          }
+          JSON
