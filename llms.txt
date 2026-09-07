@@ -5,21 +5,21 @@
 ## Profile
 
 - [Home](https://www.omramanathan.com/): Overview of Om Ramanathan and his current work.
-- [Professional profile](https://www.omramanathan.com/linkedin.html): Experience, education, certifications, volunteering, and skills.
+- [Professional profile](https://www.omramanathan.com/#experience): Experience, education, certifications, volunteering, and skills.
 - [LinkedIn](https://www.linkedin.com/in/omramanathan/): Om Ramanathan's public LinkedIn profile.
 
 ## Projects
 
-- [Projects](https://www.omramanathan.com/projects.html): The Real Temp, RoadSeal, and other engineering work.
+- [Projects](https://www.omramanathan.com/#projects): The Real Temp, RoadSeal, and engineering work.
 - [The Real Temp](https://therealtemp.com/): Weather product founded, designed, and developed by Om Ramanathan.
 
 ## STEM outreach
 
-- [Outreach](https://www.omramanathan.com/outreach.html): Free hands-on STEM workshops led by Om Ramanathan.
-- [Light and Sound workshop](https://www.omramanathan.com/workshop-light-sound.html)
-- [LEGO Bridge workshop](https://www.omramanathan.com/workshop-lego-bridge.html)
-- [Scratch Coding workshop](https://www.omramanathan.com/workshop-scratch.html)
-- [Build a LEGO City workshop](https://www.omramanathan.com/workshop-lego-city.html)
+- [Outreach](https://www.omramanathan.com/#outreach): Free hands-on STEM workshops led by Om Ramanathan.
+- [Light and Sound workshop](https://www.omramanathan.com/#workshop-light-sound)
+- [LEGO Bridge workshop](https://www.omramanathan.com/#workshop-lego-bridge)
+- [Scratch Coding workshop](https://www.omramanathan.com/#workshop-scratch)
+- [Build a LEGO City workshop](https://www.omramanathan.com/#workshop-lego-city)
 
 ## Contact
 

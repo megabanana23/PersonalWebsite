@@ -47,14 +47,7 @@ jobs:
             "keyLocation": "https://www.omramanathan.com/528527b7027e4521aae400270ae25c13.txt",
             "urlList": [
               "https://www.omramanathan.com/",
-              "https://www.omramanathan.com/linkedin.html",
-              "https://www.omramanathan.com/projects.html",
-              "https://www.omramanathan.com/outreach.html",
-              "https://www.omramanathan.com/contact.html",
-              "https://www.omramanathan.com/workshop-light-sound.html",
-              "https://www.omramanathan.com/workshop-lego-bridge.html",
-              "https://www.omramanathan.com/workshop-scratch.html",
-              "https://www.omramanathan.com/workshop-lego-city.html"
+              "https://www.omramanathan.com/contact.html"
             ]
           }
           JSON
