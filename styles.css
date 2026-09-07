@@ -370,19 +370,30 @@ html { scroll-padding-top: 100px; }
 .tag-list { margin-top: 12px; gap: 8px; }
 .tag { font-size: .875rem; font-weight: 500; background: var(--surface); border-radius: 6px; padding: 6px 10px; }
 .workshop-list { margin: 22px 0; border-block: 1px solid var(--border); }
+.event-group { margin-top: 34px; }
+.event-group-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 14px; }
+.event-group-heading .eyebrow { margin: 0; }
+.event-group-heading h4 { margin: 0; color: var(--heading); font-size: 1rem; }
 .workshop-detail { scroll-margin-top: 100px; border-bottom: 1px solid var(--border); }
 .workshop-detail:last-child { border: 0; }
-.workshop-detail summary { position: relative; padding: 16px 22px 16px 0; cursor: pointer; color: var(--heading); font-weight: 600; font-size: .9375rem; list-style: none; }
+.workshop-detail summary { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 28px 16px 0; cursor: pointer; color: var(--heading); font-weight: 600; font-size: .9375rem; list-style: none; }
 .workshop-detail summary::-webkit-details-marker { display: none; }
 .workshop-detail summary::after { content: '+'; position: absolute; right: 0; top: 17px; color: var(--accent-strong); }
 .workshop-detail[open] summary::after { content: '−'; }
-.detail-date { display: block; margin-top: 3px; color: var(--muted); font-size: .8125rem; font-weight: 400; }
+.detail-meta { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-shrink: 0; }
+.detail-date { display: block; color: var(--muted); font-size: .8125rem; font-weight: 400; }
+.event-status { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 999px; font-size: .6875rem; font-weight: 800; letter-spacing: .06em; line-height: 1; text-transform: uppercase; }
+.event-status--upcoming { background: var(--accent-soft); color: var(--accent-strong); }
+.event-status--past { border: 1px solid var(--border); color: var(--muted); }
 .workshop-content { padding: 0 0 24px; }
+.workshop-content { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(240px,.8fr); gap: 22px; align-items: start; }
 .workshop-content > article > .eyebrow { display: none; }
 .workshop-content h2 { font-size: 1.25rem; margin: 12px 0; }
 .workshop-content h3 { margin-top: 20px; }
 .workshop-content .learning-list { gap: 5px; margin: 12px 0 20px; padding-left: 18px; list-style: disc; }
 .workshop-content .learning-list li { border: 0; padding: 0; border-radius: 0; font-weight: 400; }
+.event-gallery { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 2px; }
+.event-gallery img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; background: var(--surface-soft); }
 .event-stats { border-radius: 8px; }
 .event-stat { min-height: 0; padding: 14px; }
 .event-stat small { font-size: .75rem; }
@@ -409,6 +420,7 @@ html { scroll-padding-top: 100px; }
   .timeline-top { flex-direction: column; gap: 4px; }
   .timeline-item, .education-list .card, .project-body { padding: 24px; }
   .date { padding-top: 0; }
+  .workshop-content { grid-template-columns: minmax(0,1fr); }
 }
 @media (max-width: 520px) {
   .cert-grid, .skills-grid { grid-template-columns: minmax(0,1fr); }
@@ -416,6 +428,10 @@ html { scroll-padding-top: 100px; }
   .project-visual--real-temp p { font-size: 1.35rem; }
   .project-glyph { font-size: 2rem; }
   .timeline-item, .education-list .card { padding: 22px; }
+  .event-group-heading, .workshop-detail summary { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .detail-meta { justify-content: flex-start; }
+  .event-gallery { grid-template-columns: 1fr; }
+  .event-gallery img { aspect-ratio: 16 / 10; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
