@@ -326,7 +326,10 @@
     </div></div></section>
 <section class="profile-section" id="projects" aria-labelledby="projects-heading"><div class="container section-layout"><div class="section-label"><p class="eyebrow">04 / Selected work</p><h2 id="projects-heading">Projects</h2><p>Software and engineering,<br>from concept to execution.</p></div><div class="project-grid">
   <article class="project-card project-card--featured" data-reveal>
-    <div class="project-visual project-visual--real-temp"><img class="project-logo" src="assets/the-real-temp-logo.png" width="88" height="88" alt="The Real Temp logo" loading="lazy"><p>Weather, made simple.</p></div>
+    <div class="project-visual project-visual--real-temp project-visual--interactive">
+      <div class="project-visual-title"><img class="project-logo" src="assets/the-real-temp-logo.png" width="88" height="88" alt="The Real Temp logo" loading="lazy"><p>Weather,<br>made simple.</p></div>
+      <div class="project-scene" data-scene="thermometer"><canvas aria-hidden="true"></canvas><button class="scene-turn" type="button" aria-label="Rotate The Real Temp thermometer" hidden>Rotate <span aria-hidden="true">↻</span></button></div>
+    </div>
     <div class="project-body project-body--featured">
       <div class="project-intro"><span class="status">Live</span><h3>The Real Temp</h3><p class="project-summary">The Real Temp turns a complicated weather report into a clear picture of what it actually feels like outside—and what matters next. I founded, designed, and developed the product from its first idea through its live web experience.</p><ul class="tag-list"><li class="tag">Product</li><li class="tag">UX</li><li class="tag">Software</li><li class="tag">Leadership</li></ul><a class="project-link" href="https://therealtemp.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit The Real Temp website">Explore the live app <span aria-hidden="true">↗</span></a></div>
       <details class="project-details"><summary>Inside the product <span aria-hidden="true">+</span></summary><div class="project-detail-content">
@@ -335,7 +338,7 @@
       </div></details>
     </div>
   </article>
-  <article class="project-card" data-reveal><div class="project-visual"><span class="project-glyph">RS</span></div><div class="project-body"><span class="status">In development</span><h3>RoadSeal</h3><p>An autonomous robot concept designed to identify roadway cracks and apply sealant. The goal is to address cracks before water intrusion and winter freeze-thaw cycles can worsen them into potholes.</p><ul class="tag-list"><li class="tag">Robotics</li><li class="tag">Autonomy</li><li class="tag">Infrastructure</li><li class="tag">Engineering</li></ul></div></article>
+  <article class="project-card" data-reveal><div class="project-visual project-visual--interactive"><div class="project-visual-title"><span class="project-glyph">RS</span><p>Engineering<br>what’s next.</p></div><div class="project-scene" data-scene="roadseal"><canvas aria-hidden="true"></canvas><button class="scene-turn" type="button" aria-label="Rotate RoadSeal spray can" hidden>Rotate <span aria-hidden="true">↻</span></button></div></div><div class="project-body"><span class="status">In development</span><h3>RoadSeal</h3><p>An autonomous robot concept designed to identify roadway cracks and apply sealant. The goal is to address cracks before water intrusion and winter freeze-thaw cycles can worsen them into potholes.</p><ul class="tag-list"><li class="tag">Robotics</li><li class="tag">Autonomy</li><li class="tag">Infrastructure</li><li class="tag">Engineering</li></ul></div></article>
 
 
 </div></div></section>
@@ -343,5 +346,6 @@
   </main>
   <footer class="footer"><div class="container footer-row"><p>© <span data-year></span> Om Ramanathan</p><div class="footer-actions"><p><a href="#profile">Back to top ↑</a> · <a href="mailto:om@omramanathan.com">om@omramanathan.com</a></p><a class="button" href="contact.html">Contact me <span aria-hidden="true">↗</span></a></div></div></footer>
   <script src="script.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

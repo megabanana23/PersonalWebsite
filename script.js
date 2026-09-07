@@ -61,8 +61,8 @@
     element.textContent = new Date().getFullYear();
   });
 
-  const revealItems = document.querySelectorAll('[data-reveal]');
-  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const revealItems = document.querySelectorAll('[data-reveal], .cert, .skill-group, .contact-card');
+  if ('IntersectionObserver' in window && !reducedMotion.matches) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -70,8 +70,24 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
-    revealItems.forEach((item) => { item.classList.add('reveal-ready'); observer.observe(item); });
+    }, { threshold: 0, rootMargin: '0px 0px -36px 0px' });
+    revealItems.forEach((item) => {
+      const siblings = [...item.parentElement.children];
+      item.style.setProperty('--reveal-delay', `${Math.min(siblings.indexOf(item) % 3, 2) * 70}ms`);
+      item.classList.add('reveal-ready');
+      observer.observe(item);
+    });
+    // Focusing a link must never leave its containing card invisible.
+    document.addEventListener('focusin', (event) => {
+      const item = event.target.closest('.reveal-ready');
+      if (item) { item.classList.add('is-visible'); observer.unobserve(item); }
+    });
+    reducedMotion.addEventListener?.('change', () => {
+      if (reducedMotion.matches) {
+        observer.disconnect();
+        revealItems.forEach(item => item.classList.add('is-visible'));
+      }
+    });
   } else {
     revealItems.forEach((item) => item.classList.add('is-visible'));
   }
@@ -157,12 +173,15 @@
   let canvas = document.querySelector('[data-particle-canvas]');
   if (!canvas) {
     canvas = document.createElement('canvas');
-    canvas.className = 'page-particles';
     canvas.dataset.particleCanvas = '';
     canvas.setAttribute('aria-hidden', 'true');
-    document.body.prepend(canvas);
   }
   if (canvas) {
+    // Keep one viewport-sized canvas behind every section and every full page.
+    canvas.classList.add('page-particles');
+    if (canvas.parentElement !== document.body || canvas !== document.body.firstElementChild) {
+      document.body.prepend(canvas);
+    }
     const context = canvas.getContext('2d');
     if (!context) return;
     const pointer = { x: -1000, y: -1000, active: false };
