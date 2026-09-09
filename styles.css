@@ -109,7 +109,8 @@ h3 { font-size: 1.2rem; }
 @media (max-width: 700px) {
   .hero-particles, .page-particles { opacity: .3; }
 }
-.site-header, main, .footer { position: relative; z-index: 1; }
+/* Keep content above the particles without overriding the sticky header's layer. */
+main, .footer { position: relative; z-index: 1; }
 .hero-grid { position: relative; z-index: 1; }
 .hero-grid { display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; gap: clamp(50px, 8vw, 100px); }
 .hero h1 { max-width: 800px; margin-bottom: 26px; }

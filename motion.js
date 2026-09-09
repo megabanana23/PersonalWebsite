@@ -33,8 +33,8 @@
     const surfaces = [];
     const paths = [];
     const face = (points, material, shade = 1) => surfaces.push({ points, material, shade });
-    const line = (points, material, width = 1.2, overlay = false) => {
-      for (let i = 1; i < points.length; i++) paths.push({ points: [points[i - 1], points[i]], material, width, overlay });
+    const line = (points, material, width = 1.2) => {
+      for (let i = 1; i < points.length; i++) paths.push({ points: [points[i - 1], points[i]], material, width });
     };
     const box = (cx, cy, cz, w, h, d, material) => {
       const v = Array.from({ length: 8 }, (_, i) => [
@@ -80,7 +80,7 @@
         face([back[i], back[next], front[next], front[i]], 'hub', .8);
       });
       face(front, 'shell');
-      line([...front, front[0]].map(([x, y, z]) => [x, y, z + .002]), 'edge', 1.7, true);
+      line([...front, front[0]].map(([x, y, z]) => [x, y, z + .002]), 'edge', 1.7);
       // Raised liquid column and bulb stay recognisable as the model turns.
       const top = .48 - level * 1.42;
       box(-.045, (top + .9) / 2, .13, .115, .9 - top, .075, 'liquid');
@@ -97,7 +97,7 @@
       }
       for (let i = 0; i < 9; i++) {
         const y = -.94 + i * .17;
-        line([[i % 2 ? .12 : .09, y, .09], [.19, y, .09]], 'edge', 1.25, true);
+        line([[i % 2 ? .12 : .09, y, .09], [.19, y, .09]], 'edge', 1.25);
       }
     } else if (kind === 'roadseal') {
       // Metal aerosol can, printed label, raised actuator, and a short spray plume.
@@ -133,54 +133,105 @@
     return { surfaces, paths };
   };
 
-  const paint = (scene) => {
-    const { context, width, height, x, y } = scene;
-    if (!width || !height) return;
-    context.clearRect(0, 0, width, height);
-    const scale = Math.min(width, height) * (scene.kind === 'thermometer' ? .32 : .31);
-    const project = ([px, py, pz]) => {
-      const rx = px * Math.cos(y) + pz * Math.sin(y);
-      const rz = pz * Math.cos(y) - px * Math.sin(y);
-      const ry = py * Math.cos(x) - rz * Math.sin(x);
-      const z = py * Math.sin(x) + rz * Math.cos(x);
-      const perspective = 4.8 / (4.8 - z);
-      return [width / 2 + rx * scale * perspective, height * .46 + ry * scale * perspective, z];
+  // Rasterize at the canvas resolution with a shared depth buffer. Reciprocal
+  // camera distance interpolates linearly in screen space, including perspective.
+  // Scanline spans also handle the thermometer's concave outline without a fan
+  // triangulation that would incorrectly fill the neck outside its silhouette.
+  const rasterize = (parts, width, height, pixels, depths, colors, ratio) => {
+    pixels.fill(0);
+    depths.fill(-Infinity);
+    const put = (x, y, depth, color) => {
+      const index = y * width + x;
+      if (depth < depths[index]) return;
+      depths[index] = depth;
+      const offset = index * 4;
+      pixels[offset] = color[0];
+      pixels[offset + 1] = color[1];
+      pixels[offset + 2] = color[2];
+      pixels[offset + 3] = 255;
     };
-    const model = scene.kind === 'thermometer' ? geometry(scene.kind, scene.level) : scene.model;
-    // Sort faces and details together so wheels, tick marks, and the crack occlude correctly.
-    const parts = [...model.surfaces, ...model.paths]
-      .filter(part => !part.overlay || Math.cos(y) * Math.cos(x) > 0)
-      .map(part => {
-      const points = part.points.map(project);
-      return { ...part, points, depth: points.reduce((sum, p) => sum + p[2], 0) / points.length };
-    }).sort((a, b) => Number(!!a.overlay) - Number(!!b.overlay) || a.depth - b.depth);
     parts.forEach(part => {
-      context.beginPath();
-      context.moveTo(part.points[0][0], part.points[0][1]);
-      part.points.slice(1).forEach(p => context.lineTo(p[0], p[1]));
+      const points = part.points;
+      const base = colors[part.material];
+      const shade = part.shade ?? 1;
+      const color = base.map((value, i) => Math.round(value * shade + [7, 28, 41][i] * (1 - shade)));
       if (part.width) {
-        context.strokeStyle = palette[part.material];
-        context.lineWidth = part.width;
-        context.lineCap = 'round';
-        context.lineJoin = 'round';
-        context.stroke();
-      } else {
-        context.closePath();
-        const color = palette[part.material];
-        const hex = color.startsWith('#') ? color.slice(1) : '';
-        const expanded = hex.length === 3 ? [...hex].map(c => c + c).join('') : hex;
-        const shade = part.shade ?? 1;
-        context.fillStyle = expanded.length === 6
-          ? `rgb(${[0, 2, 4].map((offset, i) => Math.round(parseInt(expanded.slice(offset, offset + 2), 16) * shade + [7, 28, 41][i] * (1 - shade))).join(',')})`
-          : color;
-        context.fill();
-        // Slightly overlap tessellated faces to avoid antialiasing gaps.
-        context.strokeStyle = context.fillStyle;
-        context.lineWidth = .45;
-        context.lineJoin = 'round';
-        context.stroke();
+        const [a, b] = points;
+        const dx = b[0] - a[0], dy = b[1] - a[1];
+        const lengthSquared = dx * dx + dy * dy;
+        const radius = part.width * ratio / 2;
+        const left = Math.max(0, Math.floor(Math.min(a[0], b[0]) - radius));
+        const right = Math.min(width - 1, Math.ceil(Math.max(a[0], b[0]) + radius));
+        const top = Math.max(0, Math.floor(Math.min(a[1], b[1]) - radius));
+        const bottom = Math.min(height - 1, Math.ceil(Math.max(a[1], b[1]) + radius));
+        for (let y = top; y <= bottom; y++) {
+          for (let x = left; x <= right; x++) {
+            const t = lengthSquared ? clamp(((x + .5 - a[0]) * dx + (y + .5 - a[1]) * dy) / lengthSquared, 0, 1) : 0;
+            if ((x + .5 - a[0] - t * dx) ** 2 + (y + .5 - a[1] - t * dy) ** 2 <= radius * radius) {
+              put(x, y, a[2] + t * (b[2] - a[2]), color);
+            }
+          }
+        }
+        return;
+      }
+      const top = Math.max(0, Math.ceil(Math.min(...points.map(p => p[1])) - .5));
+      const bottom = Math.min(height - 1, Math.ceil(Math.max(...points.map(p => p[1])) - .5) - 1);
+      for (let y = top; y <= bottom; y++) {
+        const scanY = y + .5;
+        const crossings = [];
+        points.forEach((a, i) => {
+          const b = points[(i + 1) % points.length];
+          // Half-open edges keep shared vertices and adjacent faces watertight.
+          if ((a[1] <= scanY && b[1] > scanY) || (b[1] <= scanY && a[1] > scanY)) {
+            const t = (scanY - a[1]) / (b[1] - a[1]);
+            crossings.push([a[0] + t * (b[0] - a[0]), a[2] + t * (b[2] - a[2])]);
+          }
+        });
+        crossings.sort((a, b) => a[0] - b[0]);
+        for (let i = 0; i + 1 < crossings.length; i += 2) {
+          const [a, b] = [crossings[i], crossings[i + 1]];
+          const start = Math.max(0, Math.ceil(a[0] - .5));
+          const end = Math.min(width - 1, Math.ceil(b[0] - .5) - 1);
+          for (let x = start; x <= end; x++) {
+            const t = (x + .5 - a[0]) / (b[0] - a[0]);
+            put(x, y, a[1] + t * (b[1] - a[1]), color);
+          }
+        }
       }
     });
+  };
+
+  const paint = (scene) => {
+    const { context, width, height, x, y, ratio, canvas } = scene;
+    if (!width || !height || !canvas.width || !canvas.height) return;
+    const scale = Math.min(width, height) * (scene.kind === 'thermometer' ? .32 : .31);
+    const cosX = Math.cos(x), sinX = Math.sin(x), cosY = Math.cos(y), sinY = Math.sin(y);
+    const project = ([px, py, pz]) => {
+      const rx = px * cosY + pz * sinY;
+      const rz = pz * cosY - px * sinY;
+      const ry = py * cosX - rz * sinX;
+      const z = py * sinX + rz * cosX;
+      const depth = 1 / (4.8 - z);
+      return [(width / 2 + rx * scale * 4.8 * depth) * ratio,
+        (height * .46 + ry * scale * 4.8 * depth) * ratio, depth];
+    };
+    if (scene.kind === 'thermometer' && scene.modelLevel !== scene.level) {
+      scene.model = geometry(scene.kind, scene.level);
+      scene.modelLevel = scene.level;
+    }
+    const parts = [...scene.model.surfaces, ...scene.model.paths]
+      .map(part => ({ ...part, points: part.points.map(project) }));
+    if (!scene.image || scene.image.width !== canvas.width || scene.image.height !== canvas.height) {
+      scene.image = context.createImageData(canvas.width, canvas.height);
+      scene.depths = new Float64Array(canvas.width * canvas.height);
+    }
+    const colors = Object.fromEntries(Object.entries(palette).map(([key, color]) => {
+      const hex = color.slice(1);
+      const expanded = hex.length === 3 ? [...hex].map(c => c + c).join('') : hex;
+      return [key, [0, 2, 4].map(offset => parseInt(expanded.slice(offset, offset + 2), 16))];
+    }));
+    rasterize(parts, canvas.width, canvas.height, scene.image.data, scene.depths, colors, ratio);
+    context.putImageData(scene.image, 0, 0);
     scene.dirty = false;
   };
 
