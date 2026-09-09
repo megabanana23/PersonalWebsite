@@ -530,3 +530,73 @@ html { scroll-padding-top: 100px; }
   .motion-card, .motion-card:hover { transform: none; }
   .motion-card::after, .motion-ready .section-label::after { display: none; }
 }
+
+/* Keep the profile link beside the name, with a generous keyboard/touch target. */
+.identity > div { min-width: 0; }
+.identity img { flex-shrink: 0; }
+.identity-name { display: flex; align-items: center; gap: 10px; }
+.linkedin-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 8px; color: var(--accent-strong); }
+.linkedin-link svg { width: 24px; height: 24px; }
+.linkedin-link:hover { background: var(--accent-soft); }
+.linkedin-link:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; }
+.hero-panel li:last-child { padding-bottom: 0; }
+.experience-skills { margin-top: 16px; }
+#skills { scroll-margin-top: 112px; }
+@media (max-width: 520px) {
+  .hero .identity h1 { font-size: clamp(1.1rem, 5.5vw, 1.7rem); }
+  .identity-name { gap: 4px; }
+}
+
+/* Role slides move horizontally; their shared grid keeps the hero height stable. */
+.carousel-ready .role-slides { overflow: hidden; touch-action: pan-y; cursor: grab; }
+.carousel-ready .role-slide { min-width: 0; visibility: visible; animation: none; transition: transform .4s ease; }
+.carousel-ready .role-slides.is-dragging { cursor: grabbing; user-select: none; }
+.carousel-ready .is-dragging .role-slide { transition: none; }
+.carousel-controls { display: flex; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+.carousel-dot, .carousel-pause { display: grid; place-items: center; width: 32px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--accent-strong); cursor: pointer; }
+.carousel-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); opacity: .45; transition: width .2s, background .2s; }
+.carousel-dot[aria-pressed="true"]::before { width: 20px; border-radius: 8px; background: var(--accent-strong); opacity: 1; }
+.carousel-pause { width: 44px; margin-left: 4px; font-size: 1rem; }
+.carousel-pause[hidden] { display: none; }
+.carousel-dot:focus-visible, .carousel-pause:focus-visible, .role-slides:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 2px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  .carousel-ready .role-slide, .carousel-dot::before { transition: none; }
+}
+
+/* Separate the expanded community role from the compact experience rows. */
+.experience-list { display: grid; gap: 24px; min-width: 0; }
+.outreach-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; }
+.outreach-heading { align-items: flex-start; gap: 18px; }
+.outreach-support { flex-shrink: 0; font-size: .875rem; padding: 12px 16px; }
+.outreach-card .event-group { margin-top: 28px; padding: 20px; border-radius: 10px; background: var(--surface-soft); }
+.outreach-card .event-group-heading { flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 12px; }
+.outreach-card .workshop-location { margin: 0; color: var(--muted); font-size: .875rem; }
+.outreach-card .workshop-list { display: grid; gap: 6px; margin: 0; border: 0; }
+.outreach-card .workshop-detail { border: 0; border-radius: 6px; }
+.outreach-card .workshop-detail summary { padding: 14px 30px 14px 12px; border-radius: 6px; gap: 12px; }
+.outreach-card .workshop-detail summary::after { right: 10px; top: 14px; }
+.outreach-card .workshop-detail summary:hover, .outreach-card .workshop-detail[open] { background: var(--surface); }
+.outreach-card .workshop-detail summary:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+.outreach-card .workshop-content { padding: 0 14px 18px; grid-template-columns: minmax(0, 1fr); }
+.outreach-card .workshop-content .event-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 720px) {
+  .outreach-card { padding: 24px; }
+  .outreach-heading { gap: 16px; }
+  .outreach-card .event-group { padding: 14px; }
+  .outreach-card .workshop-detail summary { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+@media (max-width: 520px) {
+  .outreach-card { padding: 22px; }
+  .outreach-support { width: 100%; justify-content: center; }
+}
+
+/* Community workshops stay in the continuous experience timeline. */
+.timeline > .outreach-card { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; }
+.photo-carousel { grid-column: 1 / -1; min-width: 0; margin-top: 12px; }
+.photo-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; border-radius: 8px; background: var(--bg); }
+.photo-slide { flex: 0 0 100%; min-width: 0; margin: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+.photo-slide img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; }
+.photo-controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 12px; }
+.photo-counter { min-width: 70px; text-align: center; color: var(--muted); font-size: .875rem; font-variant-numeric: tabular-nums; }
+.photo-controls button { width: 44px; height: 44px; }
+.photo-track:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; }

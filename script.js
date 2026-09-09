@@ -95,44 +95,156 @@
   const carousel = document.querySelector('[data-carousel]');
   if (carousel) {
     const slides = [...carousel.querySelectorAll('[data-role-slide]')];
+    const viewport = carousel.querySelector('[data-role-slides]');
+    const controls = document.createElement('div');
+    controls.className = 'carousel-controls';
+    const dots = slides.map((slide, index) => {
+      slide.id = `role-slide-${index + 1}`;
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'carousel-dot';
+      dot.setAttribute('aria-label', `Show ${slide.querySelector('h2').textContent}`);
+      dot.setAttribute('aria-controls', slide.id);
+      dot.addEventListener('click', () => showSlide(index));
+      controls.append(dot);
+      return dot;
+    });
+    const pause = document.createElement('button');
+    pause.type = 'button';
+    pause.className = 'carousel-pause';
+    controls.append(pause);
+    carousel.append(controls);
+    viewport.tabIndex = 0;
+    viewport.setAttribute('aria-label', 'Swipe or use left and right arrow keys to explore roles');
     let current = 0;
     let timer;
+    let paused = false;
+    let hovered = false;
+    let drag = null;
     const schedule = () => {
       clearTimeout(timer);
-      if (!document.hidden && !reducedMotion.matches) {
+      if (!document.hidden && !reducedMotion.matches && !paused && !hovered && !drag && !carousel.contains(document.activeElement)) {
         timer = setTimeout(() => showSlide(current + 1), 5500);
       }
+    };
+    const positionSlides = (offset = 0) => {
+      slides.forEach((slide, i) => {
+        slide.style.transform = `translateX(calc(${(i - current) * 100}% + ${offset}px))`;
+      });
     };
     const showSlide = (index) => {
       current = (index + slides.length) % slides.length;
       slides.forEach((slide, i) => {
         const active = i === current;
-        slide.style.visibility = active ? 'visible' : 'hidden';
         slide.setAttribute('aria-hidden', String(!active));
         slide.inert = !active;
         slide.classList.toggle('is-active', active);
+        dots[i].setAttribute('aria-pressed', String(active));
       });
+      positionSlides();
       schedule();
     };
-    const syncCarousel = () => {
-      clearTimeout(timer);
-      carousel.classList.toggle('carousel-ready', !reducedMotion.matches);
-      if (reducedMotion.matches) {
-        // Keep every role readable when the visitor prefers a static experience.
-        slides.forEach(slide => {
-          slide.style.visibility = 'visible';
-          slide.removeAttribute('aria-hidden');
-          slide.inert = false;
-          slide.classList.remove('is-active');
-        });
-      } else {
-        showSlide(current);
-      }
+    const syncPause = () => {
+      pause.textContent = paused ? '▶' : 'Ⅱ';
+      pause.setAttribute('aria-label', paused ? 'Resume automatic rotation' : 'Pause automatic rotation');
+      pause.hidden = reducedMotion.matches;
+      schedule();
     };
-    reducedMotion.addEventListener?.('change', syncCarousel);
+    pause.addEventListener('click', () => { paused = !paused; syncPause(); });
+    controls.addEventListener('keydown', (event) => {
+      const index = dots.indexOf(document.activeElement);
+      if (index < 0 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? slides.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + slides.length) % slides.length;
+      showSlide(next);
+      dots[next].focus();
+    });
+    viewport.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      showSlide(current + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    viewport.addEventListener('pointerdown', (event) => {
+      if (!event.isPrimary || event.button !== 0) return;
+      drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
+      viewport.setPointerCapture(event.pointerId);
+      viewport.classList.add('is-dragging');
+      schedule();
+    });
+    viewport.addEventListener('pointermove', (event) => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const dx = event.clientX - drag.x;
+      if (Math.abs(dx) > Math.abs(event.clientY - drag.y)) positionSlides(dx);
+    });
+    const endDrag = (event) => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const dx = event.clientX - drag.x;
+      const dy = event.clientY - drag.y;
+      drag = null;
+      viewport.classList.remove('is-dragging');
+      if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+      const advance = event.type === 'pointerup' && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy);
+      showSlide(current + (advance ? (dx < 0 ? 1 : -1) : 0));
+    };
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('lostpointercapture', endDrag);
+    carousel.addEventListener('pointerenter', (event) => { if (event.pointerType === 'mouse') { hovered = true; schedule(); } });
+    carousel.addEventListener('pointerleave', () => { hovered = false; schedule(); });
+    carousel.addEventListener('focusin', schedule);
+    carousel.addEventListener('focusout', () => setTimeout(schedule, 0));
+    reducedMotion.addEventListener?.('change', syncPause);
     document.addEventListener('visibilitychange', schedule);
-    syncCarousel();
+    carousel.classList.add('carousel-ready');
+    syncPause();
+    showSlide(current);
   }
+
+  document.querySelectorAll('[data-photo-carousel]').forEach((gallery) => {
+    const track = gallery.querySelector('.photo-track');
+    const photos = [...track.children];
+    const controls = document.createElement('div');
+    controls.className = 'photo-controls';
+    let current = 0;
+    const previous = document.createElement('button');
+    const next = document.createElement('button');
+    const counter = document.createElement('span');
+    counter.className = 'photo-counter';
+    counter.setAttribute('aria-live', 'polite');
+    counter.setAttribute('aria-atomic', 'true');
+    const update = () => {
+      if (track.clientWidth) current = Math.max(0, Math.min(photos.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+      counter.textContent = `${current + 1} / ${photos.length}`;
+      previous.disabled = current === 0;
+      next.disabled = current === photos.length - 1;
+    };
+    const go = (index) => {
+      current = Math.max(0, Math.min(photos.length - 1, index));
+      track.scrollTo({left: current * track.clientWidth, behavior: reducedMotion.matches ? 'instant' : 'smooth'});
+    };
+    [previous, next].forEach((button, i) => {
+      button.type = 'button';
+      button.className = 'icon-button';
+      button.textContent = i ? '→' : '←';
+      button.setAttribute('aria-label', i ? 'Next photo' : 'Previous photo');
+      button.addEventListener('click', () => go(current + (i ? 1 : -1)));
+    });
+    controls.append(previous, counter, next);
+    gallery.append(controls);
+    track.tabIndex = 0;
+    track.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      go(event.key === 'Home' ? 0 : event.key === 'End' ? photos.length - 1 : current + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    track.addEventListener('scroll', update, {passive: true});
+    // Preserve the selected photo when an accordion reopens or the viewport changes.
+    new ResizeObserver(() => {
+      if (track.clientWidth) track.scrollTo({left: current * track.clientWidth, behavior: 'instant'});
+      update();
+    }).observe(track);
+    update();
+  });
 
   const revealHashTarget = () => {
     let hash;
