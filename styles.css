@@ -55,6 +55,11 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* Lenis owns easing while active; native scrolling remains the fallback. */
+html.lenis { scroll-behavior: auto; }
+html { scrollbar-gutter: stable; }
+[data-barba="container"] { position: relative; z-index: 1; }
+.is-transitioning, .is-transitioning a { cursor: progress; }
 body {
   position: relative;
   isolation: isolate;
@@ -66,6 +71,9 @@ body {
   font: 400 16px/1.7 'DM Sans', sans-serif;
 }
 body.menu-open { overflow: hidden; }
+/* Lenis already locks the root. A second body lock would turn it into the
+   sticky header's scroll container and send the mobile menu offscreen. */
+html.lenis-stopped body.menu-open { overflow: visible; }
 a { color: inherit; }
 img { max-width: 100%; }
 h1, h2, h3, h4, p { margin-top: 0; }
@@ -89,7 +97,7 @@ h3 { font-size: 1.2rem; }
 .nav { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--heading); font-family: 'Manrope', sans-serif; font-weight: 800; text-decoration: none; }
 .brand-photo { width: 40px; height: 40px; object-fit: cover; object-position: 50% 34%; border: 2px solid var(--surface); border-radius: 50%; box-shadow: 0 0 0 1px var(--border); }
-.brand-mark { width: 40px; height: 40px; flex: 0 0 40px; overflow: hidden; border: 2px solid var(--surface); border-radius: 50%; background: url('39fea302-61a3-4dbe-ab69-1303c605be59.jpg') 50% 34% / cover no-repeat; box-shadow: 0 0 0 1px var(--border); color: transparent; font-size: 0; }
+.brand-mark { width: 40px; height: 40px; flex: 0 0 40px; overflow: hidden; border: 2px solid var(--surface); border-radius: 50%; background: url('assets/profile/om-ramanathan.jpg') 50% 34% / cover no-repeat; box-shadow: 0 0 0 1px var(--border); color: transparent; font-size: 0; }
 .nav-links { display: flex; align-items: center; gap: 4px; margin: 0 0 0 auto; padding: 0; list-style: none; }
 .nav-links a { display: block; padding: 9px 12px; border-radius: 9px; color: var(--muted); font-size: .92rem; font-weight: 600; text-decoration: none; }
 .nav-links a:hover, .nav-links a[aria-current] { color: var(--heading); background: var(--surface-soft); }
@@ -592,6 +600,19 @@ html { scroll-padding-top: 100px; }
 
 /* Community workshops stay in the continuous experience timeline. */
 .timeline > .outreach-card { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; }
+
+.workshop-impact { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 28px; padding-block: 22px; border-block: 1px solid var(--border); }
+.workshop-impact strong { display: block; color: var(--heading); font-family: 'Manrope', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
+.workshop-impact span { display: block; margin-top: 4px; color: var(--muted); font-size: .8125rem; }
+.outreach-card .workshop-data-note { margin-top: 12px; color: var(--muted); font-size: .8125rem; line-height: 1.6; }
+.outreach-card .workshop-empty { margin-bottom: 0; font-size: .875rem; }
+.workshop-stat-source { margin: 10px 0 0; font-size: .75rem; color: var(--muted); }
+.workshop-stat-source a { text-underline-offset: 3px; }
+.event-stat strong { font-variant-numeric: tabular-nums; }
+@media (max-width: 420px) {
+  .workshop-impact { gap: 10px; }
+  .workshop-impact span { font-size: .75rem; }
+}
 .photo-carousel { grid-column: 1 / -1; min-width: 0; margin-top: 12px; }
 .photo-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; border-radius: 8px; background: var(--bg); }
 .photo-slide { flex: 0 0 100%; min-width: 0; margin: 0; scroll-snap-align: start; scroll-snap-stop: always; }

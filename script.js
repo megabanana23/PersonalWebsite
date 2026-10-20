@@ -1,8 +1,11 @@
-(() => {
+window.initSitePage = (page) => {
+  const scope = window.createPageScope();
+  const on = scope.on;
+  const observe = scope.observe;
   const root = document.documentElement;
-  const themeToggle = document.querySelector('[data-theme-toggle]');
-  const menuToggle = document.querySelector('[data-menu-toggle]');
-  const navMenu = document.querySelector('[data-nav-menu]');
+  const themeToggle = page.querySelector('[data-theme-toggle]');
+  const menuToggle = page.querySelector('[data-menu-toggle]');
+  const navMenu = page.querySelector('[data-nav-menu]');
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -23,14 +26,14 @@
 
   updateThemeLabel();
 
-  themeToggle?.addEventListener('click', () => {
+  on(themeToggle, 'click', () => {
     const next = activeTheme() === 'dark' ? 'light' : 'dark';
     root.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch {}
     updateThemeLabel();
   });
 
-  systemTheme.addEventListener?.('change', () => {
+  on(systemTheme, 'change', () => {
     if (!root.dataset.theme) updateThemeLabel();
   });
 
@@ -42,7 +45,7 @@
     document.body.classList.remove('menu-open');
   };
 
-  menuToggle?.addEventListener('click', () => {
+  on(menuToggle, 'click', () => {
     const open = menuToggle.getAttribute('aria-expanded') === 'true';
     menuToggle.setAttribute('aria-expanded', String(!open));
     menuToggle.setAttribute('aria-label', open ? 'Open navigation' : 'Close navigation');
@@ -50,27 +53,27 @@
     document.body.classList.toggle('menu-open', !open);
   });
 
-  navMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', (event) => {
+  navMenu?.querySelectorAll('a').forEach((link) => on(link, 'click', closeMenu));
+  on(document, 'keydown', (event) => {
     if (event.key === 'Escape' && menuToggle?.getAttribute('aria-expanded') === 'true') { closeMenu(); menuToggle.focus(); }
   });
 
-  window.matchMedia('(max-width: 720px)').addEventListener?.('change', closeMenu);
+  on(window.matchMedia('(max-width: 720px)'), 'change', closeMenu);
 
-  document.querySelectorAll('[data-year]').forEach((element) => {
+  page.querySelectorAll('[data-year]').forEach((element) => {
     element.textContent = new Date().getFullYear();
   });
 
-  const revealItems = document.querySelectorAll('[data-reveal], .cert, .skill-group, .contact-card');
+  const revealItems = page.querySelectorAll('[data-reveal], .cert, .skill-group, .contact-card');
   if ('IntersectionObserver' in window && !reducedMotion.matches) {
-    const observer = new IntersectionObserver((entries) => {
+    const observer = observe(new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0, rootMargin: '0px 0px -36px 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px -36px 0px' }));
     revealItems.forEach((item) => {
       const siblings = [...item.parentElement.children];
       item.style.setProperty('--reveal-delay', `${Math.min(siblings.indexOf(item) % 3, 2) * 70}ms`);
@@ -78,11 +81,11 @@
       observer.observe(item);
     });
     // Focusing a link must never leave its containing card invisible.
-    document.addEventListener('focusin', (event) => {
+    on(document, 'focusin', (event) => {
       const item = event.target.closest('.reveal-ready');
       if (item) { item.classList.add('is-visible'); observer.unobserve(item); }
     });
-    reducedMotion.addEventListener?.('change', () => {
+    on(reducedMotion, 'change', () => {
       if (reducedMotion.matches) {
         observer.disconnect();
         revealItems.forEach(item => item.classList.add('is-visible'));
@@ -92,7 +95,7 @@
     revealItems.forEach((item) => item.classList.add('is-visible'));
   }
 
-  const carousel = document.querySelector('[data-carousel]');
+  const carousel = page.querySelector('[data-carousel]');
   if (carousel) {
     const slides = [...carousel.querySelectorAll('[data-role-slide]')];
     const viewport = carousel.querySelector('[data-role-slides]');
@@ -105,7 +108,7 @@
       dot.className = 'carousel-dot';
       dot.setAttribute('aria-label', `Show ${slide.querySelector('h2').textContent}`);
       dot.setAttribute('aria-controls', slide.id);
-      dot.addEventListener('click', () => showSlide(index));
+      on(dot, 'click', () => showSlide(index));
       controls.append(dot);
       return dot;
     });
@@ -118,13 +121,14 @@
     viewport.setAttribute('aria-label', 'Swipe or use left and right arrow keys to explore roles');
     let current = 0;
     let timer;
+    scope.cleanup(() => clearTimeout(timer));
     let paused = false;
     let hovered = false;
     let drag = null;
     const schedule = () => {
       clearTimeout(timer);
       if (!document.hidden && !reducedMotion.matches && !paused && !hovered && !drag && !carousel.contains(document.activeElement)) {
-        timer = setTimeout(() => showSlide(current + 1), 5500);
+        timer = setTimeout(() => showSlide(current + 1), 5000);
       }
     };
     const positionSlides = (offset = 0) => {
@@ -150,8 +154,8 @@
       pause.hidden = reducedMotion.matches;
       schedule();
     };
-    pause.addEventListener('click', () => { paused = !paused; syncPause(); });
-    controls.addEventListener('keydown', (event) => {
+    on(pause, 'click', () => { paused = !paused; syncPause(); });
+    on(controls, 'keydown', (event) => {
       const index = dots.indexOf(document.activeElement);
       if (index < 0 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
@@ -159,19 +163,19 @@
       showSlide(next);
       dots[next].focus();
     });
-    viewport.addEventListener('keydown', (event) => {
+    on(viewport, 'keydown', (event) => {
       if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
       event.preventDefault();
       showSlide(current + (event.key === 'ArrowRight' ? 1 : -1));
     });
-    viewport.addEventListener('pointerdown', (event) => {
+    on(viewport, 'pointerdown', (event) => {
       if (!event.isPrimary || event.button !== 0) return;
       drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
       viewport.setPointerCapture(event.pointerId);
       viewport.classList.add('is-dragging');
       schedule();
     });
-    viewport.addEventListener('pointermove', (event) => {
+    on(viewport, 'pointermove', (event) => {
       if (!drag || event.pointerId !== drag.id) return;
       const dx = event.clientX - drag.x;
       if (Math.abs(dx) > Math.abs(event.clientY - drag.y)) positionSlides(dx);
@@ -186,21 +190,21 @@
       const advance = event.type === 'pointerup' && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy);
       showSlide(current + (advance ? (dx < 0 ? 1 : -1) : 0));
     };
-    viewport.addEventListener('pointerup', endDrag);
-    viewport.addEventListener('pointercancel', endDrag);
-    viewport.addEventListener('lostpointercapture', endDrag);
-    carousel.addEventListener('pointerenter', (event) => { if (event.pointerType === 'mouse') { hovered = true; schedule(); } });
-    carousel.addEventListener('pointerleave', () => { hovered = false; schedule(); });
-    carousel.addEventListener('focusin', schedule);
-    carousel.addEventListener('focusout', () => setTimeout(schedule, 0));
-    reducedMotion.addEventListener?.('change', syncPause);
-    document.addEventListener('visibilitychange', schedule);
+    on(viewport, 'pointerup', endDrag);
+    on(viewport, 'pointercancel', endDrag);
+    on(viewport, 'lostpointercapture', endDrag);
+    on(carousel, 'pointerenter', (event) => { if (event.pointerType === 'mouse') { hovered = true; schedule(); } });
+    on(carousel, 'pointerleave', () => { hovered = false; schedule(); });
+    on(carousel, 'focusin', schedule);
+    on(carousel, 'focusout', () => scope.timeout(schedule, 0));
+    on(reducedMotion, 'change', syncPause);
+    on(document, 'visibilitychange', schedule);
     carousel.classList.add('carousel-ready');
     syncPause();
     showSlide(current);
   }
 
-  document.querySelectorAll('[data-photo-carousel]').forEach((gallery) => {
+  page.querySelectorAll('[data-photo-carousel]').forEach((gallery) => {
     const track = gallery.querySelector('.photo-track');
     const photos = [...track.children];
     const controls = document.createElement('div');
@@ -227,22 +231,22 @@
       button.className = 'icon-button';
       button.textContent = i ? '→' : '←';
       button.setAttribute('aria-label', i ? 'Next photo' : 'Previous photo');
-      button.addEventListener('click', () => go(current + (i ? 1 : -1)));
+      on(button, 'click', () => go(current + (i ? 1 : -1)));
     });
     controls.append(previous, counter, next);
     gallery.append(controls);
     track.tabIndex = 0;
-    track.addEventListener('keydown', (event) => {
+    on(track, 'keydown', (event) => {
       if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
       go(event.key === 'Home' ? 0 : event.key === 'End' ? photos.length - 1 : current + (event.key === 'ArrowRight' ? 1 : -1));
     });
-    track.addEventListener('scroll', update, {passive: true});
+    on(track, 'scroll', update, {passive: true});
     // Preserve the selected photo when an accordion reopens or the viewport changes.
-    new ResizeObserver(() => {
+    observe(new ResizeObserver(() => {
       if (track.clientWidth) track.scrollTo({left: current * track.clientWidth, behavior: 'instant'});
       update();
-    }).observe(track);
+    })).observe(track);
     update();
   });
 
@@ -253,15 +257,16 @@
     if (!target) return;
     if (target.matches('details')) {
       target.open = true;
-      target.scrollIntoView({ block: 'start', behavior: 'instant' });
     }
   };
-  window.addEventListener('hashchange', revealHashTarget);
-  revealHashTarget();
+  on(window, 'hashchange', revealHashTarget);
+  // Initial and incoming hashes are resolved by navigation.js after layout is ready.
 
-  const sectionLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const sectionLinks = [...page.querySelectorAll('.nav-links a[href^="#"]')];
   if (sectionLinks.length) {
     let scrollQueued = false;
+    let sectionFrame;
+    scope.cleanup(() => cancelAnimationFrame(sectionFrame));
     const updateSection = () => {
       let active;
       for (const link of sectionLinks) {
@@ -276,12 +281,20 @@
       });
       scrollQueued = false;
     };
-    window.addEventListener('scroll', () => {
-      if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(updateSection); }
+    on(window, 'scroll', () => {
+      if (!scrollQueued) { scrollQueued = true; sectionFrame = requestAnimationFrame(updateSection); }
     }, { passive: true });
     updateSection();
   }
 
+  scope.cleanup(closeMenu);
+  return scope.dispose;
+};
+
+// The particle backdrop lives outside Barba's replaceable container.
+(() => {
+  const root = document.documentElement;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let canvas = document.querySelector('[data-particle-canvas]');
   if (!canvas) {
     canvas = document.createElement('canvas');

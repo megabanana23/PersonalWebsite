@@ -1,11 +1,14 @@
-/* Small, event-driven motion layer. No animation library or WebGL dependency. */
-(() => {
+/* Page-scoped, event-driven motion; Lenis retains native scroll events. */
+window.initSiteMotion = (page) => {
+  const scope = window.createPageScope();
+  const on = scope.on;
+  const observe = scope.observe;
   const root = document.documentElement;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  const sections = [...document.querySelectorAll('.profile-section')];
-  const cards = [...document.querySelectorAll('.hero-panel, .education-list .card, .cert, .contact-card')];
+  const sections = [...page.querySelectorAll('.profile-section')];
+  const cards = [...page.querySelectorAll('.hero-panel, .education-list .card, .cert, .contact-card')];
   const scenes = [];
   let frame = 0;
   let measure = true;
@@ -235,7 +238,7 @@
     scene.dirty = false;
   };
 
-  document.querySelectorAll('[data-scene]').forEach(element => {
+  page.querySelectorAll('[data-scene]').forEach(element => {
     const canvas = element.querySelector('canvas');
     const context = canvas?.getContext('2d');
     if (!context) return;
@@ -247,7 +250,7 @@
     };
     scenes.push(scene);
     const visual = element.closest('.project-visual');
-    visual.addEventListener('pointermove', event => {
+    on(visual, 'pointermove', event => {
       if (reduced.matches || !finePointer.matches || event.pointerType === 'touch') return;
       const rect = visual.getBoundingClientRect();
       scene.pointerX = clamp((event.clientX - rect.left) / rect.width - .5, -.5, .5);
@@ -255,11 +258,11 @@
       schedule();
     }, { passive: true });
     const resetPointer = () => { scene.pointerX = scene.pointerY = 0; schedule(); };
-    visual.addEventListener('pointerleave', resetPointer);
-    visual.addEventListener('pointercancel', resetPointer);
+    on(visual, 'pointerleave', resetPointer);
+    on(visual, 'pointercancel', resetPointer);
     const button = element.querySelector('.scene-turn');
     button.hidden = false;
-    button.addEventListener('click', () => {
+    on(button, 'click', () => {
       scene.turn += Math.PI / 3;
       scene.dirty = true;
       schedule();
@@ -269,7 +272,7 @@
   const tilts = cards.map(element => {
     element.classList.add('motion-card');
     const state = { element, x: 0, y: 0, tx: 0, ty: 0 };
-    element.addEventListener('pointermove', event => {
+    on(element, 'pointermove', event => {
       if (reduced.matches || !finePointer.matches || event.pointerType === 'touch') return;
       const rect = element.getBoundingClientRect();
       const x = clamp((event.clientX - rect.left) / rect.width, 0, 1);
@@ -286,8 +289,8 @@
       element.classList.remove('is-pointed');
       schedule();
     };
-    element.addEventListener('pointerleave', reset);
-    element.addEventListener('pointercancel', reset);
+    on(element, 'pointerleave', reset);
+    on(element, 'pointercancel', reset);
     return state;
   });
 
@@ -349,9 +352,9 @@
     if (unsettled) schedule();
   }
 
-  window.addEventListener('scroll', invalidate, { passive: true });
-  window.addEventListener('resize', invalidate, { passive: true });
-  document.addEventListener('toggle', invalidate, true);
+  on(window, 'scroll', invalidate, { passive: true });
+  on(window, 'resize', invalidate, { passive: true });
+  on(document, 'toggle', invalidate, true);
   const resetInteraction = () => {
     tilts.forEach(state => {
       state.tx = state.ty = 0;
@@ -360,17 +363,19 @@
     scenes.forEach(scene => { scene.pointerX = scene.pointerY = 0; scene.dirty = true; });
     invalidate();
   };
-  reduced.addEventListener('change', resetInteraction);
-  finePointer.addEventListener('change', resetInteraction);
-  window.addEventListener('blur', resetInteraction);
-  document.addEventListener('visibilitychange', () => {
+  on(reduced, 'change', resetInteraction);
+  on(finePointer, 'change', resetInteraction);
+  on(window, 'blur', resetInteraction);
+  on(document, 'visibilitychange', () => {
     if (document.hidden) { cancelAnimationFrame(frame); frame = 0; }
     else resetInteraction();
   });
-  if ('ResizeObserver' in window) new ResizeObserver(invalidate).observe(document.body);
-  new MutationObserver(readTheme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
+  if ('ResizeObserver' in window) observe(new ResizeObserver(invalidate)).observe(page);
+  observe(new MutationObserver(readTheme)).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  on(window.matchMedia('(prefers-color-scheme: dark)'), 'change', readTheme);
   root.classList.add('motion-ready');
   readTheme();
   invalidate();
-})();
+  scope.cleanup(() => cancelAnimationFrame(frame));
+  return scope.dispose;
+};
