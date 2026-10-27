@@ -1,6 +1,6 @@
 # Om Ramanathan
 
-> Official website of Om Ramanathan, a New Jersey student engineer, founder, robotics builder, and STEM community leader.
+> Official website of Om Ramanathan, a New Jersey student engineer, Raider Robotics FTC Team 17670 captain, founder, AI researcher, and STEM community leader.
 
 ## Profile
 
@@ -8,9 +8,16 @@
 - [Professional profile](https://www.omramanathan.com/#experience): Experience, education, certifications, volunteering, and skills.
 - [LinkedIn](https://www.linkedin.com/in/omramanathan/): Om Ramanathan's public LinkedIn profile.
 
+## Engineering and leadership
+
+- Robotics Team Captain, Raider Robotics FTC Team 17670 at Scotch Plains-Fanwood High School, May 2026–present. Robot programming, sensor integration, autonomous systems, and team leadership.
+- Independent AI Researcher, October 2025–present. Embedded systems and machine learning on microcontrollers.
+- Chapter Leader, STEM Enrichment of New Jersey, May 2026–present. Free, hands-on STEM workshops.
+
 ## Projects
 
 - [Projects](https://www.omramanathan.com/#projects): The Real Temp, RoadSeal, and engineering work.
+- [AI Implementation on Microcontrollers](https://www.omramanathan.com/#ai-research): TinyML research, listed on LinkedIn as pending IEEE publication.
 - [The Real Temp](https://therealtemp.com/): Weather product founded, designed, and developed by Om Ramanathan.
 
 ## STEM outreach
