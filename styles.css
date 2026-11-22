@@ -374,6 +374,17 @@ html { scroll-padding-top: 100px; }
 .project-details[open] summary > span { transform: rotate(45deg); }
 .project-detail-content { display: grid; gap: 28px; padding-top: 24px; }
 .project-kicker { font-size: .875rem; letter-spacing: .06em; }
+.research-highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: 12px; margin: 22px 0 0; }
+.research-highlights > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-soft); }
+.research-highlights dt { color: var(--muted); font-size: .875rem; }
+.research-highlights dd { margin: 0; color: var(--heading); font: 800 clamp(1.25rem, 3vw, 1.65rem)/1.25 'Manrope', sans-serif; font-variant-numeric: tabular-nums; }
+.research-detail-content h4 { margin-bottom: 8px; font-size: 1.05rem; }
+.research-detail-content p:last-child { margin-bottom: 0; }
+.research-model-sizes { width: 100%; border-collapse: collapse; font-size: .9375rem; }
+.research-model-sizes th, .research-model-sizes td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+.research-model-sizes thead { color: var(--heading); background: var(--surface-soft); }
+.research-model-sizes tbody th { font-weight: 500; }
+.research-model-sizes :is(th, td):last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .skills-section { background: color-mix(in srgb, var(--surface-soft) 86%, transparent); backdrop-filter: blur(2px); }
 .skills-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px; }
 .skill-group h3 { font-size: 1rem; margin-bottom: 16px; }

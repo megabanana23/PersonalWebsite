@@ -71,11 +71,11 @@ Reviewed sections: About, Experience, Education, Licenses & Certifications, Proj
 
 - The Real Temp
   - Founded, designed, and developed the live weather product at https://therealtemp.com/
-- AI Implementation on Microcontrollers
-  - Project title on LinkedIn explicitly says "pending IEEE publication"
-  - Applied methods for deploying machine learning models on microcontroller-class hardware
-  - Explores TinyML opportunities in healthcare, smart agriculture, and industrial predictive maintenance, alongside open-source datasets and standardized benchmarks
-  - The About section mentions publishing a research paper, but the website retains the more specific project status, pending IEEE publication
+- Machine Learning Implementation on Microcontrollers
+  - Om Ramanathan, Shweta Loonkar, and Karishma Desai. Om presented the research at I2ITCON 2026. [Published online October 30, 2026 in IEEE Xplore](https://ieeexplore.ieee.org/document/11747344/)
+  - A 1D convolutional neural network classified still, shake, and tilt from synthetic three-axis accelerometer data. It reached 97.3% test accuracy and 0.970 macro F1.
+  - Post-training quantization reduced the TensorFlow Lite model from 196.88 KB (float32) to 56.89 KB (INT8). The experiment ran in Google Colab and the paper describes a path to hardware deployment.
+  - The paper calls for standardized TinyML benchmarks and open sensor datasets and discusses possible applications in healthcare, agriculture, and predictive maintenance.
 - Road Seal Crack Detector Robot (presented as RoadSeal on the website)
   - Autonomous robot designed to seal cracks in pavement and asphalt
   - Existing website presents it as an in-development concept

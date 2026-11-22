@@ -17,7 +17,7 @@
 ## Projects
 
 - [Projects](https://www.omramanathan.com/#projects): The Real Temp, RoadSeal, and engineering work.
-- [AI Implementation on Microcontrollers](https://www.omramanathan.com/#ai-research): TinyML research, listed on LinkedIn as pending IEEE publication.
+- [Machine Learning Implementation on Microcontrollers](https://www.omramanathan.com/#ai-research): I2ITCON 2026 paper by Om Ramanathan, Shweta Loonkar, and Karishma Desai. A 1D CNN reached 97.3% test accuracy on simulated accelerometer data. The INT8 model was 56.89 KB. Physical hardware benchmarking remains future work. [IEEE Xplore](https://ieeexplore.ieee.org/document/11747344/)
 - [The Real Temp](https://therealtemp.com/): Weather product founded, designed, and developed by Om Ramanathan.
 
 ## STEM outreach

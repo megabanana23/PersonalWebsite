@@ -65,6 +65,22 @@
         }
       },
       {
+        "@type": "ScholarlyArticle",
+        "@id": "https://www.omramanathan.com/#ai-research",
+        "name": "Machine Learning Implementation on Microcontrollers",
+        "url": "https://ieeexplore.ieee.org/document/11747344/",
+        "datePublished": "2026-10-30",
+        "author": [
+          { "@id": "https://www.omramanathan.com/#person" },
+          { "@type": "Person", "name": "Shweta Loonkar" },
+          { "@type": "Person", "name": "Karishma Desai" }
+        ],
+        "isPartOf": {
+          "@type": "CreativeWork",
+          "name": "2026 2nd International Conference on Information, Implementation and Innovation in Technology (I2ITCON)"
+        }
+      },
+      {
         "@type": "Organization",
         "@id": "https://therealtemp.com/#organization",
         "name": "The Real Temp",
@@ -415,14 +431,45 @@
     </div>
   </article>
   <article class="project-card" data-reveal><div class="project-visual project-visual--interactive"><div class="project-visual-title"><span class="project-glyph">RS</span><p>Engineering<br>what’s next.</p></div><div class="project-scene" data-scene="roadseal"><canvas aria-hidden="true"></canvas><button class="scene-turn" type="button" aria-label="Rotate RoadSeal spray can" hidden>Rotate <span aria-hidden="true">↻</span></button></div></div><div class="project-body"><span class="status">In development</span><h3>RoadSeal</h3><p>An autonomous robot concept designed to identify roadway cracks and apply sealant. The goal is to address cracks before water intrusion and winter freeze-thaw cycles can worsen them into potholes.</p><ul class="tag-list"><li class="tag">Robotics</li><li class="tag">Autonomy</li><li class="tag">Infrastructure</li><li class="tag">Engineering</li></ul></div></article>
-  <article class="project-card" id="ai-research" data-reveal>
-    <div class="project-visual"><div class="project-visual-title"><span class="project-glyph" aria-hidden="true">AI</span><p>Machine learning,<br>on a smaller scale.</p></div></div>
+  <article class="project-card" id="ai-research" aria-labelledby="ai-research-heading" data-reveal>
+    <div class="project-visual"><div class="project-visual-title"><span class="project-glyph" aria-hidden="true">AI</span><p>TinyML for embedded devices</p></div></div>
     <div class="project-body">
-      <span class="status">Pending IEEE publication</span>
-      <h3>AI Implementation on Microcontrollers</h3>
-      <p>A research paper exploring how machine learning models can run locally on microcontroller hardware. The study presents an applied approach to deploying these models and examines opportunities for TinyML in healthcare, smart agriculture, and industrial predictive maintenance, alongside the need for open-source datasets and standardized benchmarks.</p>
-      <ul class="tag-list"><li class="tag">TinyML</li><li class="tag">Machine Learning</li><li class="tag">Microcontrollers</li><li class="tag">Research</li></ul>
-      <a class="project-link" href="https://www.linkedin.com/in/omramanathan/details/projects/" target="_blank" rel="noopener noreferrer" aria-label="View AI Implementation on Microcontrollers on LinkedIn">View research on LinkedIn <span aria-hidden="true">↗</span></a>
+      <span class="status">Published in IEEE Xplore</span>
+      <h3 id="ai-research-heading">Machine Learning Implementation on Microcontrollers</h3>
+      <p class="meta">Om Ramanathan, Shweta Loonkar, and Karishma Desai<br>I2ITCON 2026 · Published online <time datetime="2026-10-30">October 30, 2026</time></p>
+      <p class="project-summary">How small can a neural network get while still classifying motion from a sensor? We trained a model to recognize still, shake, and tilt from simulated accelerometer readings, then compressed it for microcontrollers with limited memory. I presented the study at I2ITCON 2026.</p>
+      <dl class="research-highlights">
+        <div><dt>Test accuracy on simulated data</dt><dd>97.3%</dd></div>
+        <div><dt>8-bit TensorFlow Lite model size</dt><dd>56.89 KB</dd></div>
+      </dl>
+      <a class="project-link" href="https://ieeexplore.ieee.org/document/11747344/" target="_blank" rel="noopener noreferrer">Read the paper on IEEE Xplore</a>
+
+      <details class="project-details">
+        <summary>Methods, results, and limitations <span aria-hidden="true">+</span></summary>
+        <div class="project-detail-content research-detail-content">
+          <div>
+            <h4>Motion-classification experiment</h4>
+            <p>We generated and normalized 100-sample windows of three-axis accelerometer data with Gaussian and sinusoidal noise. A lightweight 1D convolutional neural network trained in Keras and TensorFlow used 70% of the data for training, 15% for validation, and 15% for testing. The paper reports macro-averaged precision of 0.971, recall of 0.969, and F1 of 0.970.</p>
+          </div>
+          <div>
+            <h4>Model compression</h4>
+            <p>After training, we calibrated the conversion with 100 samples and quantized the model’s weights and activations to 8-bit integers. The INT8 file was about 71% smaller than the float32 TensorFlow Lite export.</p>
+            <table class="research-model-sizes" aria-label="Exported model sizes">
+              <thead><tr><th scope="col">Model format</th><th scope="col">File size</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Keras H5</th><td>614.80 KB</td></tr>
+                <tr><th scope="row">TensorFlow Lite float32</th><td>196.88 KB</td></tr>
+                <tr><th scope="row">TensorFlow Lite INT8</th><td>56.89 KB</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h4>On-device deployment and benchmarking</h4>
+            <p>We tested the workflow in Google Colab using simulated sensor data. The paper outlines how to embed the INT8 model in firmware for boards such as the Arduino Nano 33 BLE Sense and ESP32. Measuring peak RAM use, end-to-end latency, and energy per inference on physical hardware with real sensor readings remains future work.</p>
+            <p>The paper discusses TensorFlow Lite Micro, CMSIS-NN, and Edge Impulse and calls for shared benchmarks and open sensor datasets. It also discusses safeguards for federated learning and potential uses in predictive maintenance, wearable health monitoring, and smart agriculture.</p>
+          </div>
+        </div>
+      </details>
     </div>
   </article>
 
