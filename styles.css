@@ -178,7 +178,6 @@ main, .footer { position: relative; z-index: 1; }
 .project-visual { min-height: 170px; display: grid; place-items: center; padding: 30px; background: var(--surface-soft); border-bottom: 1px solid var(--border); }
 .project-visual--real-temp { grid-template-columns: auto 1fr; justify-content: start; gap: clamp(24px, 5vw, 64px); min-height: 210px; padding-inline: clamp(30px, 6vw, 72px); background: linear-gradient(125deg, var(--accent-soft), var(--surface-soft)); }
 .project-visual--real-temp p { margin: 0; color: var(--heading); font-family: 'Manrope', sans-serif; font-size: clamp(1.4rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -.035em; }
-.project-glyph { color: var(--accent-strong); font-family: 'Manrope', sans-serif; font-size: clamp(2rem, 5vw, 4.2rem); font-weight: 800; letter-spacing: -.07em; }
 .project-body { flex: 1; padding: 28px; }
 .project-body--featured { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(36px, 6vw, 80px); padding: clamp(30px, 5vw, 56px); }
 .project-intro h2 { margin-bottom: 16px; }
@@ -363,7 +362,6 @@ html { scroll-padding-top: 100px; }
 .project-visual { min-height: 112px; place-items: center start; padding: 24px 30px; background-image: linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px); background-size: 24px 24px; }
 .project-visual--real-temp { min-height: 150px; grid-template-columns: auto 1fr; gap: 32px; }
 .project-visual--real-temp p { font-size: clamp(1.3rem,2.6vw,2rem); }
-.project-glyph { font-size: 2.6rem; }
 .project-body, .project-body--featured { display: block; padding: 30px; }
 .project-intro h3, .project-body > h3 { font-size: 1.75rem; letter-spacing: -.03em; margin-bottom: 14px; }
 .status { font-size: .75rem; margin-bottom: 14px; }
@@ -447,7 +445,6 @@ html { scroll-padding-top: 100px; }
   .cert-grid, .skills-grid { grid-template-columns: minmax(0,1fr); }
   .project-visual--real-temp { gap: 20px; padding: 24px; }
   .project-visual--real-temp p { font-size: 1.35rem; }
-  .project-glyph { font-size: 2rem; }
   .timeline-item, .education-list .card { padding: 22px; }
   .event-group-heading, .workshop-detail summary { align-items: flex-start; flex-direction: column; gap: 8px; }
   .detail-meta { justify-content: flex-start; }
@@ -515,7 +512,6 @@ html { scroll-padding-top: 100px; }
 .project-visual-title { display: flex; align-items: center; gap: 22px; min-width: 0; }
 .project-visual-title .project-logo { width: 72px; height: 72px; flex-shrink: 0; }
 .project-visual-title p { margin: 0; color: var(--heading); font: 700 clamp(1.1rem, 2.2vw, 1.7rem)/1.25 'Manrope', sans-serif; letter-spacing: -.035em; }
-.project-visual-title .project-glyph { min-width: 72px; text-align: center; }
 .project-scene { position: relative; width: 210px; height: 198px; }
 .project-scene canvas { display: block; width: 100%; height: 100%; pointer-events: none; }
 .scene-turn {
@@ -535,7 +531,6 @@ html { scroll-padding-top: 100px; }
   .project-visual--interactive { grid-template-columns: minmax(0, 1fr) 140px; gap: 8px; min-height: 216px; padding: 18px; }
   .project-visual-title { flex-direction: column; align-items: flex-start; gap: 12px; }
   .project-visual-title .project-logo { width: 56px; height: 56px; padding: 8px; }
-  .project-visual-title .project-glyph { min-width: 0; }
   .project-scene { width: 140px; height: 180px; }
   .scene-turn { min-height: 44px; bottom: -4px; }
 }
